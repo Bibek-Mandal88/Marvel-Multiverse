@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MARVEL MULTIVERSE | Interactive Character Experience</title>
+  <meta name="description" content="Explore the Marvel Multiverse. High-powered interactive character database, battle simulator, infinity stone powers, and cinematic sound effects." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- GSAP for Smooth Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body class="theme-marvel">
+
+  <!-- Background FX Canvas -->
+  <canvas id="hero-canvas"></canvas>
+  
+  <!-- Ambient Audio Visualizer Wave Canvas -->
+  <canvas id="audio-visualizer-canvas"></canvas>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-box">MARVEL</span>
+        <span class="logo-sub">MULTIVERSE</span>
+      </a>
+      
+      <ul class="nav-links" id="main-nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#stones" class="nav-link">Infinity Nexus</a></li>
+        <li><a href="#roster" class="nav-link">Characters</a></li>
+        <li><a href="#battle" class="nav-link">Battle Arena</a></li>
+        <li><a href="#timeline" class="nav-link">Timeline</a></li>
+        <li><a href="#anthem" class="nav-link nav-anthem-link">Marvel Anthem</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <button id="audio-toggle" class="btn-icon" title="Toggle Sound Effects">
+          <svg class="icon-speaker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+            <path class="sound-wave" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span id="audio-status-text">SFX ON</span>
+        </button>
+        
+        <button id="snap-all-btn" class="btn-snap" title="Thanos Infinity Snap">
+          <span class="gauntlet-icon">💎</span> SNAP
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <!-- Hero Looping Muted Background Video -->
+    <div class="hero-video-wrapper">
+      <video id="hero-bg-video" autoplay loop muted playsinline>
+        <source src="video/marvel-video.mp4" type="video/mp4" />
+        <source src="Video/MARVEL Video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge pulse-element">INTERACTIVE MULTIVERSE PORTAL</div>
+      <h1 class="hero-title">ASSEMBLE THE <span>LEGENDS</span></h1>
+      <p class="hero-subtitle">
+        Step into the iconic world of Marvel Super Heroes and Villains. Experience power ratings, live 3D character interactions, energy collisions, and cosmic Infinity Stone mastery.
+      </p>
+      
+      <div class="hero-actions">
+        <a href="#roster" class="btn btn-primary glow-effect" id="btn-explore">
+          <span class="btn-text">EXPLORE HEROES</span>
+          <span class="btn-glow"></span>
+        </a>
+        <a href="#battle" class="btn btn-secondary" id="btn-arena">
+          <span class="btn-text">ENTER BATTLE ARENA</span>
+        </a>
+      </div>
+
+      <!-- Quick Stats Ticker -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num" id="hero-count-num">12</span>
+          <span class="stat-label">Featured Icons</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">6</span>
+          <span class="stat-label">Infinity Stones</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">66+</span>
+          <span class="stat-label">Clash Outcomes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Character 3D Floating Showcase Slider -->
+    <div class="hero-3d-showcase">
+      <div class="showcase-card-wrapper" id="hero-3d-card">
+        <div class="showcase-glow" id="showcase-glow"></div>
+        <div class="showcase-badge" id="showcase-team">AVENGERS</div>
+        <div class="showcase-avatar-container" id="showcase-avatar">
+          <!-- Dynamic Animated SVG Visual Rendered in JS -->
+        </div>
+        <div class="showcase-info">
+          <h2 id="showcase-name">IRON MAN</h2>
+          <p id="showcase-title">TONY STARK • GENIUS BILLIONAIRE</p>
+          <div class="power-bar-compact">
+            <span class="pbar-label">ENERGY RATING</span>
+            <div class="pbar-track"><div class="pbar-fill" id="showcase-pbar" style="width: 95%;"></div></div>
+          </div>
+        </div>
+        <button class="showcase-prev" id="showcase-prev-btn">&larr;</button>
+        <button class="showcase-next" id="showcase-next-btn">&rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Infinity Stone Power Nexus Section -->
+  <section id="stones" class="stones-section">
+    <div class="section-header">
+      <h2 class="section-title">INFINITY <span>STONE</span> NEXUS</h2>
+      <p class="section-desc">Select an Infinity Stone to channel cosmic energy across the multiverse interface and alter reality.</p>
+    </div>
+
+    <div class="stones-grid">
+      <!-- Space Stone -->
+      <div class="stone-card" data-stone="space" data-color="#0088ff">
+        <div class="stone-orb space-orb"></div>
+        <h3>SPACE STONE</h3>
+        <span class="stone-power">Teleportation & Portal Mastery</span>
+        <p>Unlocks spatial manipulation and infinite mobility across dimensions.</p>
+        <button class="btn-stone-activate">HARNESS ENERGY</button>
+      </div>
+
+      <!-- Mind Stone -->
+      <div class="stone-card" data-stone="mind" data-color="#ffcc00">
+        <div class="stone-orb mind-orb"></div>
+        <h3>MIND STONE</h3>
+        <span class="stone-power">Psionic Genius & Telepathy</span>
+        <p>Grants unmatched cosmic intelligence, consciousness, and telepathic dominance.</p>
+        <button class="btn-stone-activate">HARNESS ENERGY</button>
+      </div>
+
+      <!-- Reality Stone -->
+      <div class="stone-card" data-stone="reality" data-color="#ff0044">
+        <div class="stone-orb reality-orb"></div>
+        <h3>REALITY STONE</h3>
+        <span class="stone-power">Matter & Physics Transmutation</span>
+        <p>Bends physical laws, altering matter, illusions, and natural forces at will.</p>
+        <button class="btn-stone-activate">HARNESS ENERGY</button>
+      </div>
+
+      <!-- Power Stone -->
+      <div class="stone-card" data-stone="power" data-color="#aa00ff">
+        <div class="stone-orb power-orb"></div>
+        <h3>POWER STONE</h3>
+        <span class="stone-power">Raw Destruction & Cosmic Force</span>
+        <p>Supplies limitless destruction capabilities, amplifying all physical & energy attacks.</p>
+        <button class="btn-stone-activate">HARNESS ENERGY</button>
+      </div>
+
+      <!-- Time Stone -->
+      <div class="stone-card" data-stone="time" data-color="#00ff66">
+        <div class="stone-orb time-orb"></div>
+        <h3>TIME STONE</h3>
+        <span class="stone-power">Temporal Manipulation & Visions</span>
+        <p>Allows rewind, fast-forward, time loops, and foresight into 14,000,605 futures.</p>
+        <button class="btn-stone-activate">HARNESS ENERGY</button>
+      </div>
+
+      <!-- Soul Stone -->
+      <div class="stone-card" data-stone="soul" data-color="#ff6600">
+        <div class="stone-orb soul-orb"></div>
+        <h3>SOUL STONE</h3>
+        <span class="stone-power">Essence Control & Astral Sight</span>
+        <p>Governs life, death, spiritual connections, and individual souls across all realms.</p>
+        <button class="btn-stone-activate">HARNESS ENERGY</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Character Roster Section -->
+  <section id="roster" class="roster-section">
+    <div class="section-header">
+      <h2 class="section-title">CHARACTER <span>ROSTER</span></h2>
+      <p class="section-desc">Search, filter, and discover stats, powers, and combat ratings of iconic Marvel heroes and villains.</p>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="controls-bar">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="character-search" placeholder="Search hero or villain... (e.g., Thor, Spider-Man, Chaos)" />
+        <button id="clear-search" class="btn-clear-search">&times;</button>
+      </div>
+
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-btn active" data-filter="all">ALL</button>
+        <button class="filter-btn" data-filter="avengers">AVENGERS</button>
+        <button class="filter-btn" data-filter="cosmic">COSMIC</button>
+        <button class="filter-btn" data-filter="xmen">X-MEN</button>
+        <button class="filter-btn" data-filter="magic">MAGIC</button>
+        <button class="filter-btn" data-filter="villains">VILLAINS</button>
+      </div>
+
+      <div class="sort-dropdown-wrap">
+        <label for="sort-select">Sort By:</label>
+        <select id="sort-select" class="sort-select">
+          <option value="default">Featured</option>
+          <option value="power-high">Power (High to Low)</option>
+          <option value="power-low">Power (Low to High)</option>
+          <option value="name-asc">Name (A - Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Character Cards Grid -->
+    <div class="roster-grid" id="roster-grid">
+      <!-- Generated Dynamically via JS -->
+    </div>
+  </section>
+
+  <!-- Superhero Battle Arena Section -->
+  <section id="battle" class="battle-section">
+    <div class="section-header">
+      <h2 class="section-title">SUPERPOWER <span>BATTLE ARENA</span></h2>
+      <p class="section-desc">Select two warriors from the Marvel Universe and simulate an epic animated power clash with real-time stats physics.</p>
+    </div>
+
+    <div class="battle-container" id="battle-container">
+      <!-- Energy Beam Collision Canvas Overlay -->
+      <canvas id="battle-clash-canvas" class="battle-clash-canvas"></canvas>
+
+      <!-- Fighter 1 Selector -->
+      <div class="fighter-box fighter-left" id="fighter1-box">
+        <div class="fighter-header">
+          <span class="fighter-corner">CORNER 1</span>
+          <select id="fighter1-select" class="fighter-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        
+        <div class="fighter-card" id="fighter1-card">
+          <div class="fighter-avatar-wrap" id="fighter1-avatar"></div>
+          <h3 id="fighter1-name">IRON MAN</h3>
+          <span id="fighter1-team" class="badge-team">AVENGERS</span>
+          
+          <!-- Dynamic HP Bar -->
+          <div class="hp-status-bar">
+            <div class="hp-info">
+              <span class="hp-label">BATTLE HEALTH</span>
+              <span class="hp-val" id="f1-hp-val">100 / 100 HP</span>
+            </div>
+            <div class="hp-track"><div class="hp-fill" id="f1-hp-fill" style="width: 100%;"></div></div>
+          </div>
+
+          <div class="stat-bars">
+            <div class="stat-row"><span class="stat-name">STRENGTH</span><div class="bar-bg"><div class="bar-fill" id="f1-stat-str"></div></div></div>
+            <div class="stat-row"><span class="stat-name">SPEED</span><div class="bar-bg"><div class="bar-fill" id="f1-stat-spd"></div></div></div>
+            <div class="stat-row"><span class="stat-name">ENERGY</span><div class="bar-bg"><div class="bar-fill" id="f1-stat-nrg"></div></div></div>
+            <div class="stat-row"><span class="stat-name">COMBAT</span><div class="bar-bg"><div class="bar-fill" id="f1-stat-cbt"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS Energy Clash Core -->
+      <div class="clash-core">
+        <div class="vs-circle" id="vs-trigger">
+          <span>VS</span>
+          <div class="vs-pulse"></div>
+        </div>
+        
+        <button id="btn-simulate-battle" class="btn btn-clash">
+          ⚡ SIMULATE CLASH ⚡
+        </button>
+
+        <div class="battle-log" id="battle-log">
+          <div class="log-message system">Ready to launch simulation. Choose combatants above.</div>
+        </div>
+      </div>
+
+      <!-- Fighter 2 Selector -->
+      <div class="fighter-box fighter-right" id="fighter2-box">
+        <div class="fighter-header">
+          <span class="fighter-corner">CORNER 2</span>
+          <select id="fighter2-select" class="fighter-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        
+        <div class="fighter-card" id="fighter2-card">
+          <div class="fighter-avatar-wrap" id="fighter2-avatar"></div>
+          <h3 id="fighter2-name">THANOS</h3>
+          <span id="fighter2-team" class="badge-team villain">VILLAINS</span>
+          
+          <!-- Dynamic HP Bar -->
+          <div class="hp-status-bar">
+            <div class="hp-info">
+              <span class="hp-label">BATTLE HEALTH</span>
+              <span class="hp-val" id="f2-hp-val">100 / 100 HP</span>
+            </div>
+            <div class="hp-track"><div class="hp-fill" id="f2-hp-fill" style="width: 100%;"></div></div>
+          </div>
+
+          <div class="stat-bars">
+            <div class="stat-row"><span class="stat-name">STRENGTH</span><div class="bar-bg"><div class="bar-fill" id="f2-stat-str"></div></div></div>
+            <div class="stat-row"><span class="stat-name">SPEED</span><div class="bar-bg"><div class="bar-fill" id="f2-stat-spd"></div></div></div>
+            <div class="stat-row"><span class="stat-name">ENERGY</span><div class="bar-bg"><div class="bar-fill" id="f2-stat-nrg"></div></div></div>
+            <div class="stat-row"><span class="stat-name">COMBAT</span><div class="bar-bg"><div class="bar-fill" id="f2-stat-cbt"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marvel Anthem Section -->
+  <section id="anthem" class="anthem-section">
+    <div class="section-header">
+      <h2 class="section-title">MARVEL <span>ANTHEM</span></h2>
+      <p class="section-desc">Experience the official cinematic theme: "Marvel Heroes, Here They Come".</p>
+    </div>
+
+    <div class="anthem-player-card" id="anthem-player-card">
+      <!-- Background Video inside Music Player -->
+      <div class="anthem-video-bg-wrap">
+        <video id="anthem-bg-video" autoplay loop muted playsinline>
+          <source src="video/marvel-video.mp4" type="video/mp4" />
+          <source src="Video/MARVEL Video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="anthem-video-overlay"></div>
+      </div>
+
+      <!-- Tiny Dancing Deadpool on Top -->
+      <div class="deadpool-dancer-wrap" id="deadpool-dancer" title="Deadpool Grooving to Marvel Anthem!">
+        <div class="deadpool-speech-bubble">MAXIMUM EFFORT! 🎵</div>
+        <img class="deadpool-img-dancer" src="images/deadpool-dancer.png" onerror="this.onerror=null; this.src='Deadpool svg/Deadpool_transparent.png';" alt="Dancing Deadpool" />
+      </div>
+
+      <!-- Disco Light Beams Overlay -->
+      <div class="disco-lights-container" id="disco-lights">
+        <div class="disco-beam disco-beam-1"></div>
+        <div class="disco-beam disco-beam-2"></div>
+        <div class="disco-beam disco-beam-3"></div>
+        <div class="disco-beam disco-beam-4"></div>
+        <div class="disco-ball-light"></div>
+      </div>
+
+      <div class="anthem-disc-container">
+        <div class="anthem-disc" id="anthem-disc">
+          <div class="disc-inner">⚡</div>
+        </div>
+      </div>
+
+      <div class="anthem-info">
+        <h3 class="anthem-title">Marvel Heroes, Here They Come</h3>
+        <span class="anthem-subtitle">OFFICIAL MULTIVERSE SOUNDTRACK</span>
+
+        <!-- Audio Element -->
+        <audio id="marvel-anthem-audio" preload="auto">
+          <source src="audio/marvel-anthem.mp3" type="audio/mpeg" />
+          <source src="Audio/Marvel Heroes, Here They Come (1).mp3" type="audio/mpeg" />
+        </audio>
+
+        <!-- Player Controls -->
+        <div class="anthem-controls">
+          <button id="anthem-play-btn" class="btn-anthem-play" title="Play / Pause">
+            <span id="anthem-play-icon">▶</span>
+          </button>
+          
+          <button id="anthem-stop-btn" class="btn-anthem-stop" title="Stop Audio">
+            <span>◼</span> STOP
+          </button>
+
+          <div class="anthem-volume-wrap">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="anthem-volume" class="anthem-volume-slider" min="0" max="1" step="0.01" value="0.8" title="Volume Control">
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="anthem-progress-container">
+          <span id="anthem-current-time" class="anthem-time">0:00</span>
+          <div class="anthem-progress-bar" id="anthem-progress-bar">
+            <div class="anthem-progress-fill" id="anthem-progress-fill"></div>
+          </div>
+          <span id="anthem-duration" class="anthem-time">0:00</span>
+        </div>
+
+        <!-- Equalizer Visualizer Bars -->
+        <div class="anthem-equalizer" id="anthem-equalizer">
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Multiverse Comic Eras Timeline Section -->
+  <section id="timeline" class="timeline-section">
+    <div class="section-header">
+      <h2 class="section-title">MULTIVERSE <span>TIMELINE</span></h2>
+      <p class="section-desc">Track the evolution of Marvel from classic print origins to the grand Multiverse Saga.</p>
+    </div>
+
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      
+      <div class="timeline-node" data-year="1939">
+        <div class="node-dot"></div>
+        <div class="node-content">
+          <span class="node-year">1939</span>
+          <h3>TIMELY COMICS ORIGIN</h3>
+          <p>Marvel Comics debuts with Marvel Comics #1, introducing the Human Torch and Namor the Sub-Mariner.</p>
+        </div>
+      </div>
+
+      <div class="timeline-node" data-year="1961">
+        <div class="node-dot"></div>
+        <div class="node-content">
+          <span class="node-year">1961</span>
+          <h3>THE SILVER AGE EXPLOSION</h3>
+          <p>Stan Lee and Jack Kirby revolutionize superheroes with Fantastic Four #1, Spider-Man, Iron Man, Avengers, and X-Men.</p>
+        </div>
+      </div>
+
+      <div class="timeline-node" data-year="2008">
+        <div class="node-dot"></div>
+        <div class="node-content">
+          <span class="node-year">2008</span>
+          <h3>INFINITY SAGA (MCU)</h3>
+          <p>Iron Man hits theaters, launching the interconnected Marvel Cinematic Universe culminating in Avengers: Endgame.</p>
+        </div>
+      </div>
+
+      <div class="timeline-node" data-year="2021+">
+        <div class="node-dot"></div>
+        <div class="node-content">
+          <span class="node-year">PRESENT & BEYOND</span>
+          <h3>THE MULTIVERSE ERA</h3>
+          <p>Alternate realities, timelines, and cosmic entities merge in Secret Wars and beyond.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Character Detail Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-container">
+      <button class="modal-close" id="modal-close-btn">&times;</button>
+      
+      <div class="modal-body" id="modal-body-content">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="logo-box">MARVEL</span> MULTIVERSE FAN EXPERIENCE
+      </div>
+      <p>Created with cutting-edge HTML5 Canvas, Web Audio API, and GSAP animations. All Marvel character names, video clips, and audio soundtracks belong to Marvel Entertainment & Disney.</p>
+      <div class="footer-bottom">
+        <span>© 2026 MARVEL FAN PORTAL • HYPER-ANIMATED EDITION</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Logic -->
+  <script src="app.js?v=3"></script>
+</body>
+</html>

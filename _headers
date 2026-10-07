@@ -1,0 +1,17 @@
+/*
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
+/*.mp4
+  Content-Type: video/mp4
+  Accept-Ranges: bytes
+
+/*.mp3
+  Content-Type: audio/mpeg
+  Accept-Ranges: bytes
+
+/*.jpg
+  Content-Type: image/jpeg
+
+/*.png
+  Content-Type: image/png
